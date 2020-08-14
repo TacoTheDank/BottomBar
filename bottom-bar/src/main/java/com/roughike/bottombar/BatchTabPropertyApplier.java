@@ -5,10 +5,6 @@ import android.support.annotation.NonNull;
 class BatchTabPropertyApplier {
     private final BottomBar bottomBar;
 
-    interface TabPropertyUpdater {
-        void update(BottomBarTab tab);
-    }
-
     BatchTabPropertyApplier(@NonNull BottomBar bottomBar) {
         this.bottomBar = bottomBar;
     }
@@ -22,5 +18,9 @@ class BatchTabPropertyApplier {
                 propertyUpdater.update(tab);
             }
         }
+    }
+
+    interface TabPropertyUpdater {
+        void update(BottomBarTab tab);
     }
 }

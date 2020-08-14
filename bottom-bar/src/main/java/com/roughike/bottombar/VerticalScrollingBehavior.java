@@ -14,7 +14,7 @@ import java.lang.annotation.RetentionPolicy;
 
 /**
  * Created by Nikola D. on 11/22/2015.
- *
+ * <p>
  * Credit goes to Nikola Despotoski:
  * https://github.com/NikolaDespotoski
  */
@@ -35,15 +35,6 @@ abstract class VerticalScrollingBehavior<V extends View> extends CoordinatorLayo
         super();
     }
 
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({ScrollDirection.SCROLL_DIRECTION_UP, ScrollDirection.SCROLL_DIRECTION_DOWN, ScrollDirection.SCROLL_NONE})
-    @interface ScrollDirection {
-        int SCROLL_DIRECTION_UP = 1;
-        int SCROLL_DIRECTION_DOWN = -1;
-        int SCROLL_NONE = 0;
-    }
-
-
     /*
        @return Overscroll direction: SCROLL_DIRECTION_UP, CROLL_DIRECTION_DOWN, SCROLL_NONE
    */
@@ -51,7 +42,6 @@ abstract class VerticalScrollingBehavior<V extends View> extends CoordinatorLayo
     int getOverScrollDirection() {
         return overScrollDirection;
     }
-
 
     /**
      * @return Scroll direction: SCROLL_DIRECTION_UP, SCROLL_DIRECTION_DOWN, SCROLL_NONE
@@ -61,7 +51,6 @@ abstract class VerticalScrollingBehavior<V extends View> extends CoordinatorLayo
     int getScrollDirection() {
         return scrollDirection;
     }
-
 
     /**
      * @param coordinatorLayout
@@ -120,7 +109,6 @@ abstract class VerticalScrollingBehavior<V extends View> extends CoordinatorLayo
         onDirectionNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed, scrollDirection);
     }
 
-
     @Override
     public boolean onNestedFling(CoordinatorLayout coordinatorLayout, V child, View target, float velocityX, float velocityY, boolean consumed) {
         super.onNestedFling(coordinatorLayout, child, target, velocityX, velocityY, consumed);
@@ -144,6 +132,14 @@ abstract class VerticalScrollingBehavior<V extends View> extends CoordinatorLayo
     @Override
     public Parcelable onSaveInstanceState(CoordinatorLayout parent, V child) {
         return super.onSaveInstanceState(parent, child);
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({ScrollDirection.SCROLL_DIRECTION_UP, ScrollDirection.SCROLL_DIRECTION_DOWN, ScrollDirection.SCROLL_NONE})
+    @interface ScrollDirection {
+        int SCROLL_DIRECTION_UP = 1;
+        int SCROLL_DIRECTION_DOWN = -1;
+        int SCROLL_NONE = 0;
     }
 
 }

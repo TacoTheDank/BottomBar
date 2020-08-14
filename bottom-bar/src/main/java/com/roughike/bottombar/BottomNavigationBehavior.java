@@ -13,7 +13,7 @@ import android.view.animation.Interpolator;
 
 /**
  * Created by Nikola D. on 3/15/2016.
- *
+ * <p>
  * Credit goes to Nikola Despotoski:
  * https://github.com/NikolaDespotoski
  */
@@ -21,18 +21,35 @@ class BottomNavigationBehavior<V extends View> extends VerticalScrollingBehavior
     private static final Interpolator INTERPOLATOR = new LinearOutSlowInInterpolator();
     private final int bottomNavHeight;
     private final int defaultOffset;
+    private final BottomNavigationWithSnackbar mWithSnackBarImpl = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? new LollipopBottomNavWithSnackBarImpl() : new PreLollipopBottomNavWithSnackBarImpl();
     private boolean isTablet = false;
-
     private ViewPropertyAnimatorCompat mTranslationAnimator;
     private boolean hidden = false;
     private int mSnackbarHeight = -1;
-    private final BottomNavigationWithSnackbar mWithSnackBarImpl = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? new LollipopBottomNavWithSnackBarImpl() : new PreLollipopBottomNavWithSnackBarImpl();
     private boolean mScrollingEnabled = true;
 
     BottomNavigationBehavior(int bottomNavHeight, int defaultOffset, boolean tablet) {
         this.bottomNavHeight = bottomNavHeight;
         this.defaultOffset = defaultOffset;
         isTablet = tablet;
+    }
+
+    static <V extends View> BottomNavigationBehavior<V> from(@NonNull V view) {
+        ViewGroup.LayoutParams params = view.getLayoutParams();
+
+        if (!(params instanceof CoordinatorLayout.LayoutParams)) {
+            throw new IllegalArgumentException("The view is not a child of CoordinatorLayout");
+        }
+
+        CoordinatorLayout.Behavior behavior = ((CoordinatorLayout.LayoutParams) params)
+                .getBehavior();
+
+        if (behavior instanceof BottomNavigationBehavior) {
+            // noinspection unchecked
+            return (BottomNavigationBehavior<V>) behavior;
+        }
+
+        throw new IllegalArgumentException("The view is not associated with BottomNavigationBehavior");
     }
 
     @Override
@@ -100,33 +117,13 @@ class BottomNavigationBehavior<V extends View> extends VerticalScrollingBehavior
         }
     }
 
-
-    void setHidden(@NonNull  V view, boolean bottomLayoutHidden) {
+    void setHidden(@NonNull V view, boolean bottomLayoutHidden) {
         if (!bottomLayoutHidden && hidden) {
             animateOffset(view, defaultOffset);
         } else if (bottomLayoutHidden && !hidden) {
-            animateOffset(view,  bottomNavHeight + defaultOffset);
+            animateOffset(view, bottomNavHeight + defaultOffset);
         }
         hidden = bottomLayoutHidden;
-    }
-
-
-    static <V extends View> BottomNavigationBehavior<V> from(@NonNull V view) {
-        ViewGroup.LayoutParams params = view.getLayoutParams();
-
-        if (!(params instanceof CoordinatorLayout.LayoutParams)) {
-            throw new IllegalArgumentException("The view is not a child of CoordinatorLayout");
-        }
-
-        CoordinatorLayout.Behavior behavior = ((CoordinatorLayout.LayoutParams) params)
-                .getBehavior();
-
-        if (behavior instanceof BottomNavigationBehavior) {
-            // noinspection unchecked
-            return (BottomNavigationBehavior<V>) behavior;
-        }
-
-        throw new IllegalArgumentException("The view is not associated with BottomNavigationBehavior");
     }
 
     private interface BottomNavigationWithSnackbar {
