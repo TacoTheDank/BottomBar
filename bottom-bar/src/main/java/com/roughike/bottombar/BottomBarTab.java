@@ -458,11 +458,11 @@ public class BottomBarTab extends LinearLayout {
 
     private void setAlphas(float alpha) {
         if (iconView != null) {
-            ViewCompat.setAlpha(iconView, alpha);
+            iconView.setAlpha(alpha);
         }
 
         if (titleView != null) {
-            ViewCompat.setAlpha(titleView, alpha);
+            titleView.setAlpha(alpha);
         }
     }
 
@@ -587,14 +587,14 @@ public class BottomBarTab extends LinearLayout {
             return;
         }
 
-        ViewCompat.setScaleX(titleView, scale);
-        ViewCompat.setScaleY(titleView, scale);
+        titleView.setScaleX(scale);
+        titleView.setScaleY(scale);
     }
 
     private void setIconScale(float scale) {
         if (isTitleless && type == Type.SHIFTING) {
-            ViewCompat.setScaleX(iconView, scale);
-            ViewCompat.setScaleY(iconView, scale);
+            iconView.setScaleX(scale);
+            iconView.setScaleY(scale);
         }
     }
 

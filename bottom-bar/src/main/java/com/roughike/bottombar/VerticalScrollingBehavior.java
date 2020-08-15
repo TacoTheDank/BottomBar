@@ -36,7 +36,7 @@ abstract class VerticalScrollingBehavior<V extends View> extends CoordinatorLayo
     }
 
     /*
-       @return Overscroll direction: SCROLL_DIRECTION_UP, CROLL_DIRECTION_DOWN, SCROLL_NONE
+       @return Overscroll direction: SCROLL_DIRECTION_UP, SCROLL_DIRECTION_DOWN, SCROLL_NONE
    */
     @ScrollDirection
     int getOverScrollDirection() {
@@ -59,31 +59,37 @@ abstract class VerticalScrollingBehavior<V extends View> extends CoordinatorLayo
      * @param currentOverScroll Unconsumed value, negative or positive based on the direction;
      * @param totalOverScroll   Cumulative value for current direction
      */
-    abstract void onNestedVerticalOverScroll(CoordinatorLayout coordinatorLayout, V child, @ScrollDirection int direction, int currentOverScroll, int totalOverScroll);
+    abstract void onNestedVerticalOverScroll(CoordinatorLayout coordinatorLayout, V child,
+                                             @ScrollDirection int direction, int currentOverScroll, int totalOverScroll);
 
     /**
      * @param scrollDirection Direction of the overscroll: SCROLL_DIRECTION_UP, SCROLL_DIRECTION_DOWN
      */
-    abstract void onDirectionNestedPreScroll(CoordinatorLayout coordinatorLayout, V child, View target, int dx, int dy, int[] consumed, @ScrollDirection int scrollDirection);
+    abstract void onDirectionNestedPreScroll(CoordinatorLayout coordinatorLayout, V child, View target,
+                                             int dx, int dy, int[] consumed, @ScrollDirection int scrollDirection);
 
     @Override
-    public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout, V child, View directTargetChild, View target, int nestedScrollAxes) {
+    public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull V child,
+                                       @NonNull View directTargetChild, @NonNull View target, int nestedScrollAxes, int type) {
         return (nestedScrollAxes & View.SCROLL_AXIS_VERTICAL) != 0;
     }
 
     @Override
-    public void onNestedScrollAccepted(CoordinatorLayout coordinatorLayout, V child, View directTargetChild, View target, int nestedScrollAxes) {
-        super.onNestedScrollAccepted(coordinatorLayout, child, directTargetChild, target, nestedScrollAxes);
+    public void onNestedScrollAccepted(@NonNull CoordinatorLayout coordinatorLayout, @NonNull V child,
+                                       @NonNull View directTargetChild, @NonNull View target, int nestedScrollAxes, int type) {
+        super.onNestedScrollAccepted(coordinatorLayout, child, directTargetChild, target, nestedScrollAxes, type);
     }
 
     @Override
-    public void onStopNestedScroll(CoordinatorLayout coordinatorLayout, V child, View target) {
-        super.onStopNestedScroll(coordinatorLayout, child, target);
+    public void onStopNestedScroll(@NonNull CoordinatorLayout coordinatorLayout,
+                                   @NonNull V child, @NonNull View target, int type) {
+        super.onStopNestedScroll(coordinatorLayout, child, target, type);
     }
 
     @Override
-    public void onNestedScroll(CoordinatorLayout coordinatorLayout, V child, View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
-        super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
+    public void onNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull V child,
+                               @NonNull View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type) {
+        super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type);
         if (dyUnconsumed > 0 && totalDyUnconsumed < 0) {
             totalDyUnconsumed = 0;
             overScrollDirection = ScrollDirection.SCROLL_DIRECTION_UP;
@@ -96,8 +102,9 @@ abstract class VerticalScrollingBehavior<V extends View> extends CoordinatorLayo
     }
 
     @Override
-    public void onNestedPreScroll(CoordinatorLayout coordinatorLayout, V child, View target, int dx, int dy, int[] consumed) {
-        super.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed);
+    public void onNestedPreScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull V child,
+                                  @NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
+        super.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed, type);
         if (dy > 0 && totalDy < 0) {
             totalDy = 0;
             scrollDirection = ScrollDirection.SCROLL_DIRECTION_UP;
@@ -110,27 +117,31 @@ abstract class VerticalScrollingBehavior<V extends View> extends CoordinatorLayo
     }
 
     @Override
-    public boolean onNestedFling(CoordinatorLayout coordinatorLayout, V child, View target, float velocityX, float velocityY, boolean consumed) {
+    public boolean onNestedFling(@NonNull CoordinatorLayout coordinatorLayout, @NonNull V child,
+                                 @NonNull View target, float velocityX, float velocityY, boolean consumed) {
         super.onNestedFling(coordinatorLayout, child, target, velocityX, velocityY, consumed);
         scrollDirection = velocityY > 0 ? ScrollDirection.SCROLL_DIRECTION_UP : ScrollDirection.SCROLL_DIRECTION_DOWN;
         return onNestedDirectionFling(coordinatorLayout, child, target, velocityX, velocityY, scrollDirection);
     }
 
-    abstract boolean onNestedDirectionFling(CoordinatorLayout coordinatorLayout, V child, View target, float velocityX, float velocityY, @ScrollDirection int scrollDirection);
+    abstract boolean onNestedDirectionFling(CoordinatorLayout coordinatorLayout, V child, View target,
+                                            float velocityX, float velocityY, @ScrollDirection int scrollDirection);
 
     @Override
-    public boolean onNestedPreFling(CoordinatorLayout coordinatorLayout, V child, View target, float velocityX, float velocityY) {
+    public boolean onNestedPreFling(@NonNull CoordinatorLayout coordinatorLayout, @NonNull V child,
+                                    @NonNull View target, float velocityX, float velocityY) {
         return super.onNestedPreFling(coordinatorLayout, child, target, velocityX, velocityY);
     }
 
     @NonNull
     @Override
-    public WindowInsetsCompat onApplyWindowInsets(CoordinatorLayout coordinatorLayout, V child, WindowInsetsCompat insets) {
+    public WindowInsetsCompat onApplyWindowInsets(@NonNull CoordinatorLayout coordinatorLayout,
+                                                  @NonNull V child, @NonNull WindowInsetsCompat insets) {
         return super.onApplyWindowInsets(coordinatorLayout, child, insets);
     }
 
     @Override
-    public Parcelable onSaveInstanceState(CoordinatorLayout parent, V child) {
+    public Parcelable onSaveInstanceState(@NonNull CoordinatorLayout parent, @NonNull V child) {
         return super.onSaveInstanceState(parent, child);
     }
 

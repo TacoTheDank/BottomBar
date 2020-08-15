@@ -53,7 +53,7 @@ class BottomNavigationBehavior<V extends View> extends VerticalScrollingBehavior
     }
 
     @Override
-    public boolean layoutDependsOn(CoordinatorLayout parent, V child, View dependency) {
+    public boolean layoutDependsOn(@NonNull CoordinatorLayout parent, @NonNull V child, @NonNull View dependency) {
         mWithSnackBarImpl.updateSnackbar(parent, dependency, child);
         return dependency instanceof Snackbar.SnackbarLayout;
     }
@@ -63,7 +63,7 @@ class BottomNavigationBehavior<V extends View> extends VerticalScrollingBehavior
     }
 
     @Override
-    public void onDependentViewRemoved(CoordinatorLayout parent, V child, View dependency) {
+    public void onDependentViewRemoved(@NonNull CoordinatorLayout parent, @NonNull V child, @NonNull View dependency) {
         updateScrollingForSnackbar(dependency, true);
         super.onDependentViewRemoved(parent, child, dependency);
     }
@@ -75,7 +75,7 @@ class BottomNavigationBehavior<V extends View> extends VerticalScrollingBehavior
     }
 
     @Override
-    public boolean onDependentViewChanged(CoordinatorLayout parent, V child, View dependency) {
+    public boolean onDependentViewChanged(@NonNull CoordinatorLayout parent, @NonNull V child, @NonNull View dependency) {
         updateScrollingForSnackbar(dependency, false);
         return super.onDependentViewChanged(parent, child, dependency);
     }
@@ -139,7 +139,7 @@ class BottomNavigationBehavior<V extends View> extends VerticalScrollingBehavior
                 if (mSnackbarHeight == -1) {
                     mSnackbarHeight = dependency.getHeight();
                 }
-                if (ViewCompat.getTranslationY(child) != 0) return;
+                if (child.getTranslationY() != 0) return;
                 int targetPadding = bottomNavHeight + mSnackbarHeight - defaultOffset;
 
                 ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) dependency.getLayoutParams();
@@ -161,7 +161,7 @@ class BottomNavigationBehavior<V extends View> extends VerticalScrollingBehavior
                 if (mSnackbarHeight == -1) {
                     mSnackbarHeight = dependency.getHeight();
                 }
-                if (ViewCompat.getTranslationY(child) != 0) return;
+                if (child.getTranslationY() != 0) return;
                 int targetPadding = (mSnackbarHeight + bottomNavHeight - defaultOffset);
                 dependency.setPadding(dependency.getPaddingLeft(),
                         dependency.getPaddingTop(), dependency.getPaddingRight(), targetPadding

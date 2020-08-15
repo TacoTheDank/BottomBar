@@ -1012,8 +1012,8 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void backgroundCircularRevealAnimation(View clickedView, final int newColor) {
-        int centerX = (int) (ViewCompat.getX(clickedView) + (clickedView.getMeasuredWidth() / 2));
-        int yOffset = isTabletMode ? (int) ViewCompat.getY(clickedView) : 0;
+        int centerX = (int) (clickedView.getX() + (clickedView.getMeasuredWidth() / 2));
+        int yOffset = isTabletMode ? (int) clickedView.getY() : 0;
         int centerY = yOffset + clickedView.getMeasuredHeight() / 2;
         int startRadius = 0;
         int finalRadius = isTabletMode ? outerContainer.getHeight() : outerContainer.getWidth();
@@ -1044,7 +1044,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
             private void onEnd() {
                 outerContainer.setBackgroundColor(newColor);
                 backgroundOverlay.setVisibility(View.INVISIBLE);
-                ViewCompat.setAlpha(backgroundOverlay, 1);
+                backgroundOverlay.setAlpha(1);
             }
         });
 
@@ -1052,7 +1052,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     }
 
     private void backgroundCrossfadeAnimation(final int newColor) {
-        ViewCompat.setAlpha(backgroundOverlay, 0);
+        backgroundOverlay.setAlpha(0);
         ViewCompat.animate(backgroundOverlay)
                 .alpha(1)
                 .setListener(new ViewPropertyAnimatorListenerAdapter() {
@@ -1069,7 +1069,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
                     private void onEnd() {
                         outerContainer.setBackgroundColor(newColor);
                         backgroundOverlay.setVisibility(View.INVISIBLE);
-                        ViewCompat.setAlpha(backgroundOverlay, 1);
+                        backgroundOverlay.setAlpha(1);
                     }
                 })
                 .start();
