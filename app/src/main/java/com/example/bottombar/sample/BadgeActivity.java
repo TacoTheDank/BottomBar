@@ -23,9 +23,9 @@ public class BadgeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_three_tabs);
 
-        messageView = (TextView) findViewById(R.id.messageView);
+        messageView = findViewById(R.id.messageView);
 
-        final BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+        final BottomBar bottomBar = findViewById(R.id.bottomBar);
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelected(@IdRes int tabId) {

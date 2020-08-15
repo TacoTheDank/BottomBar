@@ -23,9 +23,9 @@ public class CustomColorAndFontActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_color_and_font);
 
-        messageView = (TextView) findViewById(R.id.messageView);
+        messageView = findViewById(R.id.messageView);
 
-        BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+        BottomBar bottomBar = findViewById(R.id.bottomBar);
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelected(@IdRes int tabId) {
