@@ -21,8 +21,10 @@ class BottomNavigationBehavior<V extends View> extends VerticalScrollingBehavior
     private static final Interpolator INTERPOLATOR = new LinearOutSlowInInterpolator();
     private final int bottomNavHeight;
     private final int defaultOffset;
-    private final BottomNavigationWithSnackbar mWithSnackBarImpl = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? new LollipopBottomNavWithSnackBarImpl() : new PreLollipopBottomNavWithSnackBarImpl();
-    private boolean isTablet = false;
+    private final BottomNavigationWithSnackbar mWithSnackBarImpl =
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ?
+                    new LollipopBottomNavWithSnackBarImpl() : new PreLollipopBottomNavWithSnackBarImpl();
+    private boolean isTablet;
     private ViewPropertyAnimatorCompat mTranslationAnimator;
     private boolean hidden = false;
     private int mSnackbarHeight = -1;

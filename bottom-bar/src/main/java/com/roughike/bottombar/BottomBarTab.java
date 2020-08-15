@@ -140,7 +140,6 @@ public class BottomBarTab extends LinearLayout {
         }
     }
 
-    @SuppressWarnings("deprecation")
     private void updateCustomTextAppearance() {
         if (titleView == null || titleTextAppearanceResId == 0) {
             return;
@@ -366,7 +365,6 @@ public class BottomBarTab extends LinearLayout {
         return titleTextAppearanceResId;
     }
 
-    @SuppressWarnings("deprecation")
     void setTitleTextAppearance(int resId) {
         this.titleTextAppearanceResId = resId;
         updateCustomTextAppearance();
@@ -434,12 +432,7 @@ public class BottomBarTab extends LinearLayout {
         ValueAnimator anim = new ValueAnimator();
         anim.setIntValues(previousColor, color);
         anim.setEvaluator(new ArgbEvaluator());
-        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                setColors((Integer) valueAnimator.getAnimatedValue());
-            }
-        });
+        anim.addUpdateListener(valueAnimator -> setColors((Integer) valueAnimator.getAnimatedValue()));
 
         anim.setDuration(150);
         anim.start();
@@ -481,26 +474,20 @@ public class BottomBarTab extends LinearLayout {
 
         ValueAnimator animator = ValueAnimator.ofFloat(start, endWidth);
         animator.setDuration(150);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
-                ViewGroup.LayoutParams params = getLayoutParams();
-                if (params == null) return;
+        animator.addUpdateListener(animator1 -> {
+            ViewGroup.LayoutParams params = getLayoutParams();
+            if (params == null) return;
 
-                params.width = Math.round((float) animator.getAnimatedValue());
-                setLayoutParams(params);
-            }
+            params.width = Math.round((float) animator1.getAnimatedValue());
+            setLayoutParams(params);
         });
 
         // Workaround to avoid using faulty onAnimationEnd() listener
-        postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (!isActive && badge != null) {
-                    clearAnimation();
-                    badge.adjustPositionAndSize(BottomBarTab.this);
-                    badge.show();
-                }
+        postDelayed(() -> {
+            if (!isActive && badge != null) {
+                clearAnimation();
+                badge.adjustPositionAndSize(BottomBarTab.this);
+                badge.show();
             }
         }, animator.getDuration());
 
@@ -519,17 +506,12 @@ public class BottomBarTab extends LinearLayout {
         }
 
         ValueAnimator paddingAnimator = ValueAnimator.ofInt(start, end);
-        paddingAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                iconView.setPadding(
-                        iconView.getPaddingLeft(),
-                        (Integer) animation.getAnimatedValue(),
-                        iconView.getPaddingRight(),
-                        iconView.getPaddingBottom()
-                );
-            }
-        });
+        paddingAnimator.addUpdateListener(animation -> iconView.setPadding(
+                iconView.getPaddingLeft(),
+                (Integer) animation.getAnimatedValue(),
+                iconView.getPaddingRight(),
+                iconView.getPaddingBottom()
+        ));
 
         paddingAnimator.setDuration(ANIMATION_DURATION);
         paddingAnimator.start();
@@ -649,7 +631,7 @@ public class BottomBarTab extends LinearLayout {
         private final int badgeBackgroundColor;
         private final int titleTextAppearance;
         private final Typeface titleTypeFace;
-        private boolean badgeHidesWhenSelected = true;
+        private boolean badgeHidesWhenSelected;
 
         private Config(Builder builder) {
             this.inActiveTabAlpha = builder.inActiveTabAlpha;

@@ -6,10 +6,10 @@ import android.graphics.drawable.ShapeDrawable;
 import android.os.Build;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.AppCompatTextView;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.TextView;
 
 /*
  * BottomBar library for Android
@@ -27,7 +27,7 @@ import android.widget.TextView;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-class BottomBarBadge extends TextView {
+class BottomBarBadge extends AppCompatTextView {
     private int count;
     private boolean isVisible = false;
 
@@ -122,7 +122,6 @@ class BottomBarBadge extends TextView {
         tabContainer.addView(badgeContainer, tab.getIndexInTabContainer());
 
         badgeContainer.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @SuppressWarnings("deprecation")
             @Override
             public void onGlobalLayout() {
                 badgeContainer.getViewTreeObserver().removeGlobalOnLayoutListener(this);
@@ -157,7 +156,6 @@ class BottomBarBadge extends TextView {
         }
     }
 
-    @SuppressWarnings("deprecation")
     private void setBackgroundCompat(Drawable background) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             setBackground(background);

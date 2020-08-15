@@ -82,7 +82,6 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     private int titleTextAppearance;
     private Typeface titleTypeFace;
     private boolean showShadow;
-    private float shadowElevation;
     private View shadowView;
 
     private View backgroundOverlay;
@@ -173,7 +172,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private void init21(Context context) {
         if (showShadow) {
-            shadowElevation = getElevation();
+            float shadowElevation = getElevation();
             shadowElevation = shadowElevation > 0
                     ? shadowElevation
                     : getResources().getDimensionPixelSize(R.dimen.bb_default_elevation);
@@ -277,8 +276,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
 
         Drawable userDefinedBackground = getBackground();
 
-        boolean userHasDefinedBackgroundColor = userDefinedBackground != null
-                && userDefinedBackground instanceof ColorDrawable;
+        boolean userHasDefinedBackgroundColor = userDefinedBackground instanceof ColorDrawable;
 
         if (userHasDefinedBackgroundColor) {
             defaultBackgroundColor = ((ColorDrawable) userDefinedBackground).getColor();
@@ -636,12 +634,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     public void setInActiveTabAlpha(float alpha) {
         inActiveTabAlpha = alpha;
 
-        batchPropertyApplier.applyToAllTabs(new BatchTabPropertyApplier.TabPropertyUpdater() {
-            @Override
-            public void update(BottomBarTab tab) {
-                tab.setInActiveAlpha(inActiveTabAlpha);
-            }
-        });
+        batchPropertyApplier.applyToAllTabs(tab -> tab.setInActiveAlpha(inActiveTabAlpha));
     }
 
     /**
@@ -650,23 +643,13 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     public void setActiveTabAlpha(float alpha) {
         activeTabAlpha = alpha;
 
-        batchPropertyApplier.applyToAllTabs(new BatchTabPropertyApplier.TabPropertyUpdater() {
-            @Override
-            public void update(BottomBarTab tab) {
-                tab.setActiveAlpha(activeTabAlpha);
-            }
-        });
+        batchPropertyApplier.applyToAllTabs(tab -> tab.setActiveAlpha(activeTabAlpha));
     }
 
     public void setInActiveTabColor(@ColorInt int color) {
         inActiveTabColor = color;
 
-        batchPropertyApplier.applyToAllTabs(new BatchTabPropertyApplier.TabPropertyUpdater() {
-            @Override
-            public void update(BottomBarTab tab) {
-                tab.setInActiveColor(inActiveTabColor);
-            }
-        });
+        batchPropertyApplier.applyToAllTabs(tab -> tab.setInActiveColor(inActiveTabColor));
     }
 
     /**
@@ -675,12 +658,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     public void setActiveTabColor(@ColorInt int color) {
         activeTabColor = color;
 
-        batchPropertyApplier.applyToAllTabs(new BatchTabPropertyApplier.TabPropertyUpdater() {
-            @Override
-            public void update(BottomBarTab tab) {
-                tab.setActiveColor(activeTabColor);
-            }
-        });
+        batchPropertyApplier.applyToAllTabs(tab -> tab.setActiveColor(activeTabColor));
     }
 
     /**
@@ -689,12 +667,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     public void setBadgeBackgroundColor(@ColorInt int color) {
         badgeBackgroundColor = color;
 
-        batchPropertyApplier.applyToAllTabs(new BatchTabPropertyApplier.TabPropertyUpdater() {
-            @Override
-            public void update(BottomBarTab tab) {
-                tab.setBadgeBackgroundColor(badgeBackgroundColor);
-            }
-        });
+        batchPropertyApplier.applyToAllTabs(tab -> tab.setBadgeBackgroundColor(badgeBackgroundColor));
     }
 
     /**
@@ -703,12 +676,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
      */
     public void setBadgesHideWhenActive(final boolean hideWhenSelected) {
         hideBadgeWhenActive = hideWhenSelected;
-        batchPropertyApplier.applyToAllTabs(new BatchTabPropertyApplier.TabPropertyUpdater() {
-            @Override
-            public void update(BottomBarTab tab) {
-                tab.setBadgeHidesWhenActive(hideWhenSelected);
-            }
-        });
+        batchPropertyApplier.applyToAllTabs(tab -> tab.setBadgeHidesWhenActive(hideWhenSelected));
     }
 
     /**
@@ -717,12 +685,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     public void setTabTitleTextAppearance(int textAppearance) {
         titleTextAppearance = textAppearance;
 
-        batchPropertyApplier.applyToAllTabs(new BatchTabPropertyApplier.TabPropertyUpdater() {
-            @Override
-            public void update(BottomBarTab tab) {
-                tab.setTitleTextAppearance(titleTextAppearance);
-            }
-        });
+        batchPropertyApplier.applyToAllTabs(tab -> tab.setTitleTextAppearance(titleTextAppearance));
     }
 
     /**
@@ -744,12 +707,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     public void setTabTitleTypeface(Typeface typeface) {
         titleTypeFace = typeface;
 
-        batchPropertyApplier.applyToAllTabs(new BatchTabPropertyApplier.TabPropertyUpdater() {
-            @Override
-            public void update(BottomBarTab tab) {
-                tab.setTitleTypeface(titleTypeFace);
-            }
-        });
+        batchPropertyApplier.applyToAllTabs(tab -> tab.setTitleTypeface(titleTypeFace));
     }
 
     @Override
@@ -807,8 +765,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     private void initializeShyBehavior() {
         ViewParent parent = getParent();
 
-        boolean hasAbusiveParent = parent != null
-                && parent instanceof CoordinatorLayout;
+        boolean hasAbusiveParent = parent instanceof CoordinatorLayout;
 
         if (!hasAbusiveParent) {
             throw new RuntimeException("In order to have shy behavior, the " +
