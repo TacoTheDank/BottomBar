@@ -3,14 +3,15 @@ package com.roughike.bottombar;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.ViewConfiguration;
 import android.view.WindowManager;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
 
 /**
  * Created by iiro on 17.8.2016.

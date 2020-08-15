@@ -2,9 +2,10 @@ package com.example.bottombar.sample;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import com.roughike.bottombar.BottomBar;
 

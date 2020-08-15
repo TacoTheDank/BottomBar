@@ -34,12 +34,8 @@ android {
     }
 }
 
-configurations.all {
-    resolutionStrategy.force "com.android.support:support-annotations:$rootProject.ext.supportLibraryVersion"
-}
-
 dependencies {
     implementation project(':bottom-bar')
-    implementation "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
-    implementation "com.android.support:design:$rootProject.ext.supportLibraryVersion"
+    implementation "androidx.appcompat:appcompat:$appCompatVersion"
+    implementation "com.google.android.material:material:$materialVersion"
 }
