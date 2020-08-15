@@ -8,7 +8,7 @@
         android:alpha="0.6" />
 
     <!-- We use this empty space to push the text to the bottom -->
-    <androidx.legacy.widget.Space
+    <Space
         android:id="@+id/spacer"
         android:layout_width="0dp"
         android:layout_height="0dp"
